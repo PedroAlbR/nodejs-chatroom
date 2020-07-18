@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "burn": "docker-compose down && docker volume rm nodejs-chatroom_postgres && docker-compose up --force-recreate"
   },
   "repository": {
     "type": "git",

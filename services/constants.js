@@ -15,20 +15,20 @@ module.exports.CHATROOM_TABLE_NAME = 'chatroom';
 
 module.exports.USERS_TABLE_STRUCTURE = {
   id: 'TEXT PRIMARY KEY NOT NULL',
-  username: 'TEXT NOT NULL',
+  name: 'TEXT',
   password: 'TEXT NOT NULL',
   chatrooms: 'JSONB'
 };
 
 module.exports.MESSAGES_TABLE_STRUCTURE = {
-  id: 'TEXT PRIMARY KEY NOT NULL',
-  date: 'TIMESTAMP WITH TIME ZONE NOT NULL',
+  id: 'SERIAL PRIMARY KEY',
+  date: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()',
   username_id: 'TEXT NOT NULL',
   message: 'TEXT NOT NULL',
   chatroom_id: 'TEXT NOT NULL'
 };
 
 module.exports.CHATROOM_TABLE_STRUCTURE = {
-  id: 'TEXT PRIMARY KEY NOT NULL',
+  id: 'SERIAL PRIMARY KEY',
   name: 'TEXT NOT NULL'
 };
