@@ -9,26 +9,26 @@ function getByChatroom(req, res) {
 }
 
 function validateMessage(obj) {
-  if (!obj.message || !obj.chatroom_id || !obj.username_id) {
+  if (!obj.message || !obj.chatroom_id || !obj.username) {
     return new Error(`Missing parameter in object ${JSON.stringify(obj)}`)
   }
 }
 
-function putMessage(req, res) {
+function postMessage(req, res) {
   const { body } = req,
     {
       message,
       chatroom_id,
-      username_id
+      username
     } = body,
     error = validateMessage(body);
 
   if (error) return res.status(422).json(error.message);
 
-  return MESSAGE.put({ message, chatroom_id, username_id })
-    .then(() => bus.publish(username_id, message, chatroom_id))
-    .then(() => res.send({ message, chatroom_id, username_id }));
+  return MESSAGE.put({ message, chatroom_id, username })
+    .then(() => bus.publish(username, message, chatroom_id))
+    .then(() => res.send({ message, chatroom_id, username }));
 }
 
 module.exports.getByChatroom = getByChatroom;
-module.exports.putMessage = putMessage;
+module.exports.postMessage = postMessage;

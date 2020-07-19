@@ -19,14 +19,12 @@ wsServer.on('request', req => {
   console.log('Connection accepted.');
 
   bus.on('message', (channel, payload) => {
-    console.log('Bus', { channel, payload });
     if (channel === 'messages') {
       connection.sendUTF(payload);
     }
   });
 
   connection.on('close', function (reasonCode, description) {
-    console.log({ reasonCode, description })
     console.log('Peer ' + connection.remoteAddress + ' disconnected.');
   });
 });

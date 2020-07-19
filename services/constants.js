@@ -24,7 +24,7 @@ module.exports.USERS_TABLE_STRUCTURE = {
 module.exports.MESSAGES_TABLE_STRUCTURE = {
   id: 'SERIAL PRIMARY KEY',
   date: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()',
-  username_id: 'TEXT NOT NULL',
+  username: 'TEXT NOT NULL',
   message: 'TEXT NOT NULL',
   chatroom_id: 'TEXT NOT NULL'
 };

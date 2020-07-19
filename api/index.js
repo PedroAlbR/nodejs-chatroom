@@ -1,12 +1,14 @@
 'use strict'
 
 const express = require('express'),
+  cors = require('cors'),
   app = express(),
   { API_PORT } = require('../services/constants'),
   postgres = require('../db/postgres'),
   routes = require('./routes');
- 
+
 app.use(express.json());
+app.use(cors())
 app.use(routes);
 
 postgres.connect()

@@ -1,9 +1,9 @@
 'use strict';
 
 const router = require('express').Router(),
-  { putMessage, getByChatroom } = require('./handler');
+  { postMessage, getByChatroom } = require('./handler');
 
 router.get('/chatroom/:id', getByChatroom);
-router.put('/', putMessage)
+router.post('/', postMessage)
 
 module.exports = router;
