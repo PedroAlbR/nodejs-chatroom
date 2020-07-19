@@ -13,5 +13,12 @@
     "url": "https://www.github.com/pedroalbr/nodejs-chatroom"
   },
   "author": "Pedro Rosario",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ioredis": "^4.17.3",
+    "knex": "^0.21.2",
+    "pg": "^8.3.0",
+    "websocket": "^1.0.31"
+  }
 }
