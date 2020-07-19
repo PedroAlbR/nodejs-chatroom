@@ -38,4 +38,10 @@ Migrations will run if it's the first time you are running the project.
 npm run start-websocket
 ```
 
+### Stock_bot
+
+```sh
+npm run start-bot
+```
+
 This is the websocket the client uses to get the data from Redis event bus.

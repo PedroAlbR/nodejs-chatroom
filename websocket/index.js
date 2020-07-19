@@ -1,3 +1,5 @@
+'use strict';
+
 const { server: WebSocketServer } = require('websocket'),
   http = require('http'),
   Redis = require('ioredis'),
@@ -9,11 +11,13 @@ const { server: WebSocketServer } = require('websocket'),
   });
 
 bus.subscribe('messages');
-httpServer.listen(8080, () => console.log('Server is listening on port 8080\n'));
+httpServer.listen(8080, () =>
+  console.log('Server is listening on port 8080\n')
+);
 
 const wsServer = new WebSocketServer({ httpServer });
 
-wsServer.on('request', req => {
+wsServer.on('request', (req) => {
   const connection = req.accept('echo-protocol', req.origin);
 
   console.log('Connection accepted.');
