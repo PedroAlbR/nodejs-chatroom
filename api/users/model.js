@@ -1,7 +1,7 @@
 'use strict';
 
 const { USERS_TABLE_NAME } = require('../../services/constants'),
-  db = require('../postgres');
+  db = require('../../db/postgres');
 
 
 function put(username, { name, password, chatrooms }, create = false) {

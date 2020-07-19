@@ -1,5 +1,6 @@
 'use strict';
 
+module.exports.API_PORT = 3000;
 
 module.exports.DB_HOST = 'localhost';
 module.exports.DB_USER = 'admin';

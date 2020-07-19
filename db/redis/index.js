@@ -9,4 +9,4 @@ function publish(message) {
   return client.publish('messages', JSON.stringify(payload))
 }
 
-module.exports = publish;
+module.exports.publish = publish;

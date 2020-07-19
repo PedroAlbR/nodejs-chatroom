@@ -1,7 +1,7 @@
 'use strict';
 
 const { CHATROOM_TABLE_NAME } = require('../../services/constants'),
-  db = require('../postgres');
+  db = require('../../db/postgres');
 
 // Always going to create
 function put(name) {

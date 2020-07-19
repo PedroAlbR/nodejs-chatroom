@@ -2,17 +2,15 @@
 
 const express = require('express'),
   app = express(),
-  publishMessage = require('../db/redis');
+  { API_PORT } = require('../services/constants'),
+  redis = require('../db/redis'),
+  postgres = require('../db/postgres'),
+  routes = require('./routes');
  
-app.get('/', function (req, res) {
-  if (req.query.q) {
-    publishMessage(req.query.q)
-    return res.send('ok');
-  }
+app.use(express.json());
+app.use(routes);
 
-  res.send('no message sent');
-});
-
-app.listen(3000, () => {
-  console.log('App listening on port 3000');
-})
+postgres.connect()
+  .then(() => app.listen(API_PORT))
+  .then(() => console.log(`Listening app from port ${API_PORT}`))
+  .catch(error => console.log(error.message));

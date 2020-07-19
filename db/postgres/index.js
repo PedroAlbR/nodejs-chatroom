@@ -145,7 +145,7 @@ function getBy(table, conditions) {
     log('trace', 'Need at least two elements', { where: condition });
   });
 
-  return query.stream();
+  return query;
 }
 
 module.exports.connect = connect;
