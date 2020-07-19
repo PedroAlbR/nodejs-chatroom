@@ -3,7 +3,6 @@
 const express = require('express'),
   app = express(),
   { API_PORT } = require('../services/constants'),
-  redis = require('../db/redis'),
   postgres = require('../db/postgres'),
   routes = require('./routes');
  

@@ -1,0 +1,40 @@
+<html>
+<style>
+  .user1 {
+    color: red;
+  }
+
+  .user2 {
+    color: blue;
+  }
+
+  .bot {
+    color: green;
+  }
+
+</style>
+
+<body>
+  <div id="chat">
+
+  </div>
+  <script>
+    // Create WebSocket connection.
+    const socket = new WebSocket('ws://localhost:8080', 'echo-protocol');
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+      console.log('Message from server: ', event.data);
+      const data = JSON.parse(event.data);
+      const chatEl = document.querySelector('#chat');
+      const messageEl = document.createElement('li');
+
+      messageEl.setAttribute('class', data.username);
+      messageEl.innerText = `${data.username}: ${data.message}`;
+
+      chatEl.appendChild(messageEl);
+    });
+  </script>
+</body>
+
+</html>

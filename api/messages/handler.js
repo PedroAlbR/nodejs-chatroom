@@ -1,6 +1,7 @@
 'use strict';
 
-const MESSAGE = require('./model');
+const MESSAGE = require('./model'),
+  bus = require('../../db/redis');
 
 function getByChatroom(req, res) {
   return MESSAGE.getByChatroom(req.params.id)
@@ -15,11 +16,18 @@ function validateMessage(obj) {
 
 function putMessage(req, res) {
   const { body } = req,
+    {
+      message,
+      chatroom_id,
+      username_id
+    } = body,
     error = validateMessage(body);
 
-  if (error) res.status(422).json(error.message);
+  if (error) return res.status(422).json(error.message);
 
-  return MESSAGE.put(body).then(data => res.send(data));
+  return MESSAGE.put({ message, chatroom_id, username_id })
+    .then(() => bus.publish(username_id, message, chatroom_id))
+    .then(() => res.send({ message, chatroom_id, username_id }));
 }
 
 module.exports.getByChatroom = getByChatroom;
