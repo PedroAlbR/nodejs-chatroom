@@ -22,8 +22,9 @@ bus.subscriber.on('message', (channel, payload) => {
 
   return getStockData(param)
     .then(parseMessage)
-    .then((message) =>
+    .then((message) => {
+      if (!message) return;
       bus.publish('messages', { message, chatroom_id: 1, username: 'stock_bot', date: Date.now() })
-    )
+    })
     .catch(error => console.log(`Something went wrong: ${error.message}`));
 });
