@@ -3,8 +3,12 @@
 if (!sessionStorage.username) {
   window.location.href = '../homepage.html';
 } else {
+  const welcomeMsg = document.querySelector('#userMsg'),
+    socket = new WebSocket('ws://localhost:8080', 'echo-protocol');
+
   // Create WebSocket connection.
-  const socket = new WebSocket('ws://localhost:8080', 'echo-protocol');
+
+  welcomeMsg.innerText = `Currently chatting as: ${sessionStorage.username}`;
 
   getAllMessages(1).then((messages) =>
     messages.forEach((m) => addMessageToChat(m))
