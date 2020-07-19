@@ -1,7 +1,7 @@
 'use strict';
 
 const USER = require('./model'),
-  bus = require('../services/redis');
+  { validatePassword } = require('./utils');
 
 function validateUser(obj) {
   if (!obj.username || !obj.password) {
@@ -42,14 +42,48 @@ function postUser(req, res) {
       return res.send(data);
     })
     .catch((error) => {
-      if (error.constraint == 'users_pkey')
-        return res
-          .status(409)
-          .json({ status: 409, message: `User ${username} already exists` });
-      res.send(400).send(error.message);
+      if (error.constraint !== 'users_pkey')
+        return res.status(400).send({ status: 400, message: error.message });
+
+      return res
+        .status(409)
+        .json({ status: 409, message: `User ${username} already exists` });
+    });
+}
+
+function loginUser(req, res) {
+  const error = validateUser(req.body);
+
+  if (error)
+    return res.status(422).json({ status: 422, message: error.message });
+
+  return authenticateUser(req, res);
+}
+
+function authenticateUser(req, res) {
+  const { username, password } = req.body;
+
+  return USER.get(username)
+    .then((user) => {
+      if (!validatePassword(password, user.password))
+        return res.status(401).json({
+          status: 401,
+          message: `Invalid username and password combination.`,
+        });
+
+      res.json({ status: 200 });
+    })
+    .catch((error) => {
+      if (error.constraint !== 'users_pkey')
+        return res.status(400).send({ status: 400, message: error.message });
+
+      return res
+        .status(409)
+        .json({ status: 409, message: `User ${username} already exists` });
     });
 }
 
 module.exports.postUser = postUser;
 module.exports.getUser = getUser;
 module.exports.getUsers = getUsers;
+module.exports.loginUser = loginUser;

@@ -1,5 +1,7 @@
 const submitBtn = document.querySelector('#submit-btn');
 
+if (sessionStorage.username) window.location.href = '../chat/index.html';
+
 submitBtn.addEventListener('click', () => {
   const username = document.querySelector('#username-input').value,
     name = document.querySelector('#name-input').value,
@@ -33,8 +35,6 @@ submitBtn.addEventListener('click', () => {
         );
         window.location.href = '../homepage.html';
       }, 200);
-
-      // Redirect
     })
     .catch((error) => {
       errorMessage.innerText = `Error ${error.statusCode}: ${error.message}`;
