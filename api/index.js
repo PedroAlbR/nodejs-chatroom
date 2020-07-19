@@ -3,7 +3,7 @@
 const express = require('express'),
   cors = require('cors'),
   app = express(),
-  { API_PORT } = require('../services/constants'),
+  { API_PORT } = require('./services/constants'),
   postgres = require('./services/postgres'),
   routes = require('./routes');
 

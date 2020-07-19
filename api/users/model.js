@@ -1,6 +1,6 @@
 'use strict';
 
-const { USERS_TABLE_NAME } = require('../../services/constants'),
+const { USERS_TABLE_NAME } = require('../services/constants'),
   db = require('../services/postgres');
 
 
