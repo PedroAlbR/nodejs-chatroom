@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "burn": "docker-compose down && docker volume rm nodejs-chatroom_postgres && docker-compose up --force-recreate"
+    "clear-data": "docker-compose down && docker volume rm nodejs-chatroom_postgres",
+    "reset": "npm run clear-data && docker-compose up --force-recreate",
+    "start-api": "node api/index.js ",
+    "start-db": "docker-compose up",
+    "start-websocket": "node websocket/index.js"
   },
   "repository": {
     "type": "git",

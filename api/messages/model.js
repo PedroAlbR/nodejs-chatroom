@@ -1,7 +1,7 @@
 'use strict';
 
-const { MESSAGES_TABLE_NAME } = require('../../services/constants'),
-  db = require('../../db/postgres');
+const { MESSAGES_TABLE_NAME } = require('../services/constants'),
+  db = require('../db/postgres');
 
 // Always going to create
 function put({ message, chatroom_id, username }) {
