@@ -1,13 +1,7 @@
 'use strict';
 
 const USER = require('./model'),
-  { validatePassword } = require('./utils');
-
-function validateUser(obj) {
-  if (!obj.username || !obj.password) {
-    return new Error(`Missing parameter in object ${JSON.stringify(obj)}`);
-  }
-}
+  { validatePassword, validateUser, encodePassword } = require('./utils');
 
 function getUsers(req, res) {
   return USER.getAll()
@@ -34,7 +28,11 @@ function postUser(req, res) {
   if (error)
     return res.status(422).json({ status: 422, message: error.message });
 
-  const data = { name, password, chatrooms: JSON.stringify([1]) };
+  const data = {
+    name,
+    password: encodePassword(password),
+    chatrooms: JSON.stringify([1]),
+  };
 
   return USER.put(username, data)
     .then(() => {
