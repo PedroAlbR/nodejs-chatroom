@@ -2,6 +2,7 @@ const submitBtn = document.querySelector('#submit-btn');
 
 submitBtn.addEventListener('click', () => {
   const username = document.querySelector('#username-input').value,
+    name = document.querySelector('#name-input').value,
     password = document.querySelector('#password-input').value,
     errorMessage = document.querySelector('#error-msg');
 
@@ -13,11 +14,10 @@ submitBtn.addEventListener('click', () => {
   return fetch('http://localhost:3000/users', {
     method: 'POST',
     headers: { 'content-type': 'application/json; charset=UTF-8' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password, name }),
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.status >= 300) {
         const e = new Error(data.message || data.statusText);
         e.statusCode = data.status;
