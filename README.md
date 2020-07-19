@@ -2,7 +2,8 @@
 
 ## Requirements
 
-- Node v10.15.0
+- Node v12.13.0
+- npm 6.12.0
 - Docker
 
 ## Commands
