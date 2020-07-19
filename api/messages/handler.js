@@ -1,7 +1,7 @@
 'use strict';
 
 const MESSAGE = require('./model'),
-  bus = require('../../db/redis');
+  bus = require('../services/redis');
 
 function getByChatroom(req, res) {
   return MESSAGE.getByChatroom(req.params.id)

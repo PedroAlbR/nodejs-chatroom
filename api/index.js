@@ -4,7 +4,7 @@ const express = require('express'),
   cors = require('cors'),
   app = express(),
   { API_PORT } = require('../services/constants'),
-  postgres = require('../db/postgres'),
+  postgres = require('./services/postgres'),
   routes = require('./routes');
 
 app.use(express.json());
