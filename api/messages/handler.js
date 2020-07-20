@@ -34,7 +34,7 @@ function postMessage(req, res) {
   return putInDB.then(() => {
     const date = new Date();
 
-    bus.publish('messages', { username, message, chatroom_id, date });
+    bus.publish(`chatroom-${chatroom_id}`, { username, message, chatroom_id, date });
 
     return res.send({ message, chatroom_id, username, date });
   });

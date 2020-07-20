@@ -9,6 +9,10 @@ if (sessionStorage.username && CHATROOM_ID) {
     SESSION_USERNAME = sessionStorage.username,
     COMMAND_RE = /^\/.*/;
 
+  socket.onopen = () => {
+    socket.send(CHATROOM_ID);
+  };
+
   document.querySelectorAll('.chatroomName').forEach((node) => {
     node.innerText = `Chatroom #${CHATROOM_ID}`;
   });

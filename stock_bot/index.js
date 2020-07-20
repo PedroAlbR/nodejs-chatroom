@@ -6,14 +6,13 @@ const bus = require('./bus'),
 
 console.log('stock_bot is online.');
 
-bus.subscribe('messages')
-  .then(() => console.log('Subscribed to the "messages" channel'))
-  .catch(() => console.log('Failed to connect to the "messages" channel'))
+bus.subscribe('chatroom-*')
+  .then(() => console.log('Subscribed to the "chatroom-*" pattern'))
+  .catch(() => console.log('Failed to connect to the "chatroom-*" pattern'));
 
-bus.subscriber.on('message', (channel, payload) => {
+bus.subscriber.on('pmessage', (pattern, channel, payload) => {
   const data = JSON.parse(payload);
 
-  if (channel !== 'messages') return;
   if (!COMMAND_RE.test(data.message)) return;
 
   const [, command, param] = COMMAND_RE.exec(data.message);
@@ -26,5 +25,5 @@ bus.subscriber.on('message', (channel, payload) => {
       if (!message) return;
       return postMessage(message, data.chatroom_id, 'stock_bot');
     })
-    .catch(error => console.log(`Something went wrong: ${error.message}`));
+    .catch((error) => console.log(`Something went wrong: ${error.message}`));
 });

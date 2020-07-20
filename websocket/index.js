@@ -10,7 +10,6 @@ const { server: WebSocketServer } = require('websocket'),
     res.end();
   });
 
-bus.subscribe('messages');
 httpServer.listen(8080, () =>
   console.log('Server is listening on port 8080\n')
 );
@@ -22,10 +21,15 @@ wsServer.on('request', (req) => {
 
   console.log('Connection accepted.');
 
-  bus.on('message', (channel, payload) => {
-    if (channel === 'messages') {
-      connection.sendUTF(payload);
-    }
+  connection.on('message', function (message) {
+    const chatroomChannel = `chatroom-${message.utf8Data}`;
+
+    bus.subscribe(chatroomChannel);
+    bus.on('message', (channel, payload) => {
+      if (channel === chatroomChannel) {
+        connection.sendUTF(payload);
+      }
+    });
   });
 
   connection.on('close', function (reasonCode, description) {
