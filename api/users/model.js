@@ -15,5 +15,4 @@ function addChatrooms(chatrooms = []) {}
 
 module.exports.get = (key) => db.get(USERS_TABLE_NAME, key);
 module.exports.put = put;
-module.exports.del = (key) => db.del(USERS_TABLE_NAME, key);
 module.exports.getAll = getAll;

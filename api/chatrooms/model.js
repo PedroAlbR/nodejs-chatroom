@@ -1,13 +1,16 @@
 'use strict';
 
-const { CHATROOM_TABLE_NAME } = require('../../services/constants'),
+const { CHATROOM_TABLE_NAME } = require('../services/constants'),
   db = require('../services/postgres');
 
-// Always going to create
-function put(name) {
-  return db.put(CHATROOM_TABLE_NAME, name, { name }, true)
+function put(name, upsert = false) {
+  return db.put(CHATROOM_TABLE_NAME, null, { name }, upsert);
 }
 
-module.exports.get = key => db.get(CHATROOM_TABLE_NAME, key);
+function getAll() {
+  return db.getBy(CHATROOM_TABLE_NAME, []);
+}
+
+module.exports.get = (key) => db.get(CHATROOM_TABLE_NAME, key);
 module.exports.put = put;
-module.exports.del = key => db.del(CHATROOM_TABLE_NAME, key);
+module.exports.getAll = getAll;

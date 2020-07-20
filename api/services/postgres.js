@@ -112,12 +112,6 @@ function put(table, key, value, upsert) {
   return query.then(() => value);
 }
 
-function del(table, key) {
-  return baseQuery(table)
-    .where('id', key)
-    .del();
-}
-
 function getByField(table, field, value) {
   if (!knex) return Promise.reject(new Error('PG is not initialized'));
 
@@ -151,6 +145,5 @@ function getBy(table, conditions) {
 module.exports.connect = connect;
 module.exports.get = get;
 module.exports.put = put;
-module.exports.del = del;
 module.exports.getBy = getBy;
 module.exports.getByField = getByField;
