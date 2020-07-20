@@ -6,12 +6,26 @@
     <script src="index.js" defer></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
-    <h1>Chatroom 1</h1>
-    <h2 id="userMsg"></h2>
-    <a href="../homepage.html">Homepage</a>
-    <div id="chat"></div>
-    <input type="text" />
+    <section class="msger">
+      <header class="msger-header">
+        <div class="msger-header-title">
+          <i class="fas fa-comment-alt"></i>Chatroom #1
+          <i class="fas fa-comment-alt userMsg"></i><span id="userMsg"></span>
+        </div>
+        <div class="msger-header-options">
+          <span><i class="fas fa-cog"></i></span>
+        </div>
+      </header>
+      <main class="msger-chat" id="chat"></main>
+      <div class="msger-inputarea">
+        <input
+          type="text"
+          class="msger-input"
+          placeholder="Enter your message..."
+        />
+        <button class="msger-send-btn">Send</button>
+      </div>
+    </section>
   </body>
 </html>

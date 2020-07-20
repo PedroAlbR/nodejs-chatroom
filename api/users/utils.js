@@ -15,7 +15,7 @@ function validateUser(obj) {
   }
 }
 
-function encodePassword(pw, opts) {
+function encodePassword(pw, opts = {}) {
   const salt = opts.salt || new Date().getTime(),
     rounds = opts.rounds || 10;
 

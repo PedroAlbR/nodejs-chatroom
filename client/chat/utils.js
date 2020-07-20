@@ -2,18 +2,32 @@
 
 const MAX_AMOUNT_MESSAGES = 50;
 
+function createMessageElement({ message, date, username, isCurrentUser }) {
+  const messagePos = isCurrentUser ? 'right' : 'left',
+    messageEl = document.createElement('div');
+
+  messageEl.setAttribute('class', `msg ${messagePos}-msg`);
+
+  messageEl.innerHTML = `
+    <div class="msg-bubble">
+      <div class="msg-info">
+        <div class="msg-info-name">${username}</div>
+        <div class="msg-info-time">${date}</div>
+      </div>
+      <div class="msg-text">${message}</div>
+    </div>`;
+
+  return messageEl;
+}
+
 function addMessageToChat({ username, message, chatroom_id, date }) {
   const chatEl = document.querySelector('#chat'),
-    messageEl = document.createElement('li'),
-    time = new Date(date).toLocaleTimeString();
-
-  if (username === sessionStorage.username) {
-    messageEl.setAttribute('class', 'highlight');
-  }
-
-  // https://stackoverflow.com/a/3426956
-  messageEl.setAttribute('style', `color: #${intToRGB(hashCode(username))}`);
-  messageEl.innerText = `${time} ${username}: ${message}`;
+    messageEl = createMessageElement({
+      message,
+      date: new Date(date).toLocaleTimeString(),
+      username,
+      isCurrentUser: username === sessionStorage.username,
+    });
 
   if (chatEl.childElementCount >= MAX_AMOUNT_MESSAGES) {
     chatEl.removeChild(chatEl.childNodes[0]);
@@ -40,17 +54,7 @@ function getAllMessages(chatroom = 1) {
   );
 }
 
-// https://stackoverflow.com/a/3426956
-function hashCode(str) {
-  var hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return hash;
-}
-
-function intToRGB(i) {
-  var c = (i & 0x00ffffff).toString(16).toUpperCase();
-
-  return '00000'.substring(0, 6 - c.length) + c;
+function scrollChat() {
+  const chatEl = document.querySelector('#chat');
+  chatEl.scrollTo(0, chatEl.scrollHeight);
 }
