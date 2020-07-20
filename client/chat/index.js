@@ -1,19 +1,27 @@
 'use strict';
 
-if (!sessionStorage.username) {
-  window.location.href = '../homepage.html';
-} else {
+const CHATROOM_ID = getChatroomIdFromUrl();
+
+if (sessionStorage.username && CHATROOM_ID) {
   const welcomeMsg = document.querySelector('#userMsg'),
     // Create WebSocket connection.
     socket = new WebSocket('ws://localhost:8080', 'echo-protocol'),
     SESSION_USERNAME = sessionStorage.username,
     COMMAND_RE = /^\/.*/;
 
+  document.querySelectorAll('.chatroomName').forEach((node) => {
+    node.innerText = `Chatroom #${CHATROOM_ID}`;
+  });
+
   welcomeMsg.innerText = `Currently chatting as: ${SESSION_USERNAME}`;
 
-  getAllMessages(1)
+  getAllMessages(CHATROOM_ID)
     .then((messages) => messages.forEach((m) => addMessageToChat(m)))
-    .then(() => scrollChat());
+    .then(() => scrollChat())
+    .catch((e) => {
+      alert(`Error on render: ${e.message}`);
+      window.location.href = '../homepage.html';
+    });
 
   // Listen for messages
   socket.addEventListener('message', (event) => {
@@ -33,7 +41,7 @@ if (!sessionStorage.username) {
   txtbox.addEventListener('keypress', (e) => {
     if (e.code !== 'Enter') return;
 
-    return postMessage(txtbox.value, 1, SESSION_USERNAME)
+    return postMessage(txtbox.value, CHATROOM_ID, SESSION_USERNAME)
       .then(() => {
         txtbox.value = '';
         // For some reason, we have to wait
@@ -41,4 +49,6 @@ if (!sessionStorage.username) {
       })
       .catch((error) => alert(`Message could not be sent. ${error.message}`));
   });
+} else {
+  window.location.href = '../homepage.html';
 }

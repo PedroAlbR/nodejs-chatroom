@@ -48,13 +48,42 @@ function postMessage(message, chatroom, username) {
   });
 }
 
-function getAllMessages(chatroom = 1) {
-  return fetch('http://localhost:3000/messages/chatroom/1').then((res) =>
-    res.json()
-  );
+function getAllMessages(chatroom) {
+  return fetch(
+    `http://localhost:3000/messages/chatroom/${chatroom}`
+  ).then((res) => res.json())
+  .then(handleApiError)
 }
 
 function scrollChat() {
   const chatEl = document.querySelector('#chat');
   chatEl.scrollTo(0, chatEl.scrollHeight);
+}
+
+function getParamsObject(params = '') {
+  return params
+    .replace('?', '')
+    .split('&')
+    .reduce((acum, p) => {
+      const [key, value] = p.split('=');
+      acum[key] = value;
+      return acum;
+    }, {});
+}
+
+function getChatroomIdFromUrl() {
+  const paramsObj = getParamsObject(window.location.search);
+
+  return paramsObj.chatroom;
+}
+
+function handleApiError(data) {
+  if (data.status >= 300) {
+    const e = new Error(data.message || data.statusText);
+    e.statusCode = data.status;
+
+    throw e;
+  }
+
+  return data;
 }
