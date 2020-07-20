@@ -30,6 +30,7 @@ submitBtn.addEventListener('click', () => {
 
       errorMessage.innerText = '';
       sessionStorage.setItem('username', username);
+      sessionStorage.setItem('chatrooms', JSON.stringify(data.chatrooms));
       setTimeout(() => {
         // Just giving the browser some time to clear the error message
         alert('Successfuly logged in!');

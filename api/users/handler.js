@@ -69,7 +69,9 @@ function authenticateUser(req, res) {
           message: `Invalid username and password combination.`,
         });
 
-      res.json({ status: 200 });
+      delete user.password;
+
+      res.json({ ...user, status: 200 });
     })
     .catch((error) => {
       if (error.constraint !== 'users_pkey')
