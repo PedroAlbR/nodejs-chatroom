@@ -1,7 +1,7 @@
 'use strict';
 
 const bus = require('./bus'),
-  { parseMessage, getStockData } = require('./utils'),
+  { parseMessage, getStockData, postMessage } = require('./utils'),
   COMMAND_RE = /^\/(\w+)=([\w.]+)/;
 
 console.log('stock_bot is online.');
@@ -13,7 +13,7 @@ bus.subscribe('messages')
 bus.subscriber.on('message', (channel, payload) => {
   const data = JSON.parse(payload);
 
-  if (!channel === 'messages') return;
+  if (channel !== 'messages') return;
   if (!COMMAND_RE.test(data.message)) return;
 
   const [, command, param] = COMMAND_RE.exec(data.message);
@@ -24,7 +24,7 @@ bus.subscriber.on('message', (channel, payload) => {
     .then(parseMessage)
     .then((message) => {
       if (!message) return;
-      bus.publish('messages', { message, chatroom_id: 1, username: 'stock_bot', date: Date.now() })
+      return postMessage(message, data.chatroom_id, 'stock_bot');
     })
     .catch(error => console.log(`Something went wrong: ${error.message}`));
 });

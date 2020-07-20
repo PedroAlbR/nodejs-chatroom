@@ -1,7 +1,8 @@
 'use strict';
 
 const MESSAGE = require('./model'),
-  bus = require('../services/redis');
+  bus = require('../services/redis'),
+  COMMAND_RE = /^\/.*/;
 
 function getByChatroom(req, res) {
   return MESSAGE.getByChatroom(req.params.id).then((data) =>
@@ -18,14 +19,21 @@ function validateMessage(obj) {
 function postMessage(req, res) {
   const { body } = req,
     { message, chatroom_id, username } = body,
-    error = validateMessage(body);
+    error = validateMessage(body),
+    isCommand = COMMAND_RE.test(message);
+
+  let putInDB = Promise.resolve();
 
   if (error) return res.status(422).json(error.message);
 
-  return MESSAGE.put({ message, chatroom_id, username }).then(() => {
+  // If the message is not a command, add it to the db
+  if (!isCommand) putInDB = MESSAGE.put({ message, chatroom_id, username });
+
+  return putInDB.then(() => {
     const date = new Date();
 
     bus.publish('messages', { username, message, chatroom_id, date });
+
     return res.send({ message, chatroom_id, username, date });
   });
 }

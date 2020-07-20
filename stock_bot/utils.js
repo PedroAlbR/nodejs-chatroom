@@ -19,5 +19,18 @@ function getStockData(code) {
   ).then((res) => res.text());
 }
 
+function postMessage(message, chatroom, username) {
+  return fetch('http://localhost:3000/messages', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify({
+      message,
+      chatroom_id: chatroom,
+      username,
+    }),
+  });
+}
+
 module.exports.parseMessage = parseMessage;
 module.exports.getStockData = getStockData;
+module.exports.postMessage = postMessage;
