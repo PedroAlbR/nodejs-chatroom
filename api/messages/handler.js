@@ -5,9 +5,11 @@ const MESSAGE = require('./model'),
   COMMAND_RE = /^\/.*/;
 
 function getByChatroom(req, res) {
-  return MESSAGE.getByChatroom(req.params.id).then((data) =>
-    res.json(data.reverse())
-  );
+  return MESSAGE.getByChatroom(req.params.id)
+    .then((data) => res.json(data.reverse()))
+    .catch((error) =>
+      res.status(400).json({ message: error.message, status: 400 })
+    );
 }
 
 function validateMessage(obj) {
