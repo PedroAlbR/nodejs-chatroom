@@ -1,6 +1,8 @@
 'use strict';
 
-const logoutUrl = document.querySelector('#logoutUrl');
+const logoutUrl = document.querySelector('#logoutUrl'),
+  userChatroomsList = document.querySelector('#user-chatrooms'),
+  chatroomsList = document.querySelector('#all-chatrooms');
 
 function handleButtonFunctionality() {
   const loginUrl = document.querySelector('#loginUrl'),
@@ -9,13 +11,22 @@ function handleButtonFunctionality() {
 
   welcomeMsg.innerText = `Welcome, ${sessionStorage.username}`;
 
-  loginUrl.innerText = 'Go to chat';
-  loginUrl.href = 'chat/index.html';
+  loginUrl.parentElement.setAttribute('style', 'display: none');
   signinUrl.parentNode.remove();
   logoutUrl.addEventListener('click', () => {
     sessionStorage.setItem('username', '');
     sessionStorage.setItem('chatrooms', '');
   });
+}
+
+function chatroomUrlTemplate({ id, name }) {
+  return `
+    <li>
+      <a href="./chat/index.html?chatroom=${id}">
+        Chatroom #${id}: ${name}
+      </a>
+    </li>
+  `;
 }
 
 function handleApiError(data) {
@@ -49,14 +60,12 @@ function getChatroomById(id) {
 
 if (sessionStorage.username) {
   handleButtonFunctionality();
-  const userChatroomsIDs = JSON.parse(sessionStorage.chatrooms),
-    userChatroomsList = document.querySelector('#user-chatrooms'),
-    chatroomsList = document.querySelector('#all-chatrooms');
+  const userChatroomsIDs = JSON.parse(sessionStorage.chatrooms);
 
   // Get all chatroms of the logged user
   Promise.all(userChatroomsIDs.map(getChatroomById)).then((userChatrooms) => {
-    userChatrooms.forEach(({ name, id }) => {
-      userChatroomsList.innerHTML += `<li>Chatroom #${id}: ${name}</li>`;
+    userChatrooms.forEach((userChatroom) => {
+      userChatroomsList.innerHTML += chatroomUrlTemplate(userChatroom);
     });
 
     // Get all chatrooms
@@ -64,10 +73,12 @@ if (sessionStorage.username) {
       chatrooms.forEach(({ name, id }) => {
         // Only add it if its not in the user's list
         if (!userChatrooms.find((c) => c.id === id))
-          chatroomsList.innerHTML += `<li>Chatroom #${id}: ${name}</li>`;
+          chatroomsList.innerHTML += chatroomUrlTemplate({ id, name });
       });
     });
   });
 } else {
   logoutUrl.parentNode.remove();
+  userChatroomsList.parentNode.remove();
+  chatroomsList.parentNode.remove();
 }
