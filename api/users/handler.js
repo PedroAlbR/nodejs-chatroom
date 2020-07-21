@@ -15,7 +15,7 @@ function getUsers(req, res) {
 }
 
 function getUser(req, res) {
-  return USER.get(req.params.username)
+  return USER.get(req.params.username.toLowerCase())
     .then((user) => {
       delete user.password;
       res.send(user);
@@ -34,7 +34,7 @@ function updateUser(req, res) {
     return res.status(422).json({ status: 422, message: error.message });
 
   if (body.password) body.password = encodePassword(body.password);
-  return USER.update(username, body).then((user) => res.json(user));
+  return USER.update(username.toLowerCase(), body).then((user) => res.json(user));
 }
 
 function postUser(req, res) {
@@ -48,12 +48,12 @@ function postUser(req, res) {
   const data = {
     name,
     password: encodePassword(password),
-    chatrooms: JSON.stringify([1]),
+    chatrooms: JSON.stringify([]),
   };
 
-  return USER.put(username, data)
+  return USER.put(username.toLowerCase(), data)
     .then(() => {
-      data.username = username;
+      data.username = username.toLowerCase();
       return res.send(data);
     })
     .catch((error) => {
@@ -78,7 +78,7 @@ function loginUser(req, res) {
 function authenticateUser(req, res) {
   const { username, password } = req.body;
 
-  return USER.get(username)
+  return USER.get(username.toLowerCase())
     .then((user) => {
       if (!validatePassword(password, user.password))
         return res.status(401).json({

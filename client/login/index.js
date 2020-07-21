@@ -4,6 +4,10 @@ const submitBtn = document.querySelector('#login-btn');
 
 if (sessionStorage.username) window.location.href = '../chat/index.html';
 
+function capitalizeFirstLetter(str = '') {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
 submitBtn.addEventListener('click', () => {
   const username = document.querySelector('#username-input').value,
     password = document.querySelector('#password-input').value,
@@ -29,7 +33,7 @@ submitBtn.addEventListener('click', () => {
       }
 
       errorMessage.innerText = '';
-      sessionStorage.setItem('username', username);
+      sessionStorage.setItem('username', capitalizeFirstLetter(username));
       sessionStorage.setItem('chatrooms', JSON.stringify(data.chatrooms));
       setTimeout(() => {
         // Just giving the browser some time to clear the error message
