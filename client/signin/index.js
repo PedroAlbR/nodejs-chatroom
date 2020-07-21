@@ -1,6 +1,6 @@
 const submitBtn = document.querySelector('#submit-btn');
 
-if (sessionStorage.username) window.location.href = '../chat/index.html';
+if (sessionStorage.username) window.location.href = '../homepage.html';
 
 submitBtn.addEventListener('click', () => {
   const username = document.querySelector('#username-input').value,
@@ -31,9 +31,9 @@ submitBtn.addEventListener('click', () => {
       setTimeout(() => {
         // Just giving the browser some time to clear the error message
         alert(
-          'Account created succesfuly. You are being redirected to the homepage'
+          'Account created succesfuly. You are being redirected to the login page.'
         );
-        window.location.href = '../homepage.html';
+        window.location.href = '../login/index.html';
       }, 200);
     })
     .catch((error) => {

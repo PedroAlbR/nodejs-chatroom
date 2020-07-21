@@ -34,7 +34,7 @@ submitBtn.addEventListener('click', () => {
       setTimeout(() => {
         // Just giving the browser some time to clear the error message
         alert('Successfuly logged in!');
-        window.location.href = '../chat/index.html';
+        window.location.href = '../homepage.html';
       }, 200);
     })
     .catch((error) => {

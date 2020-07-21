@@ -19,14 +19,35 @@ function handleButtonFunctionality() {
   });
 }
 
-function chatroomUrlTemplate({ id, name }) {
+function chatroomUrlTemplate({ id, name }, isUserChatroom) {
+  const props = isUserChatroom
+    ? `href="./chat/index.html?chatroom=${id}"`
+    : `onClick=joinChatroom(${id}) class="url"`;
+
   return `
     <li>
-      <a href="./chat/index.html?chatroom=${id}">
+      <a ${props}>
         Chatroom #${id}: ${name}
       </a>
     </li>
   `;
+}
+
+function joinChatroom(id) {
+  fetch(`http://localhost:3000/users/${sessionStorage.username}`, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify({ chatrooms: [id] }),
+  })
+    .then(res => res.json())
+    .then(handleApiError)
+    .then((data) => {
+      sessionStorage.setItem('chatrooms', JSON.stringify(data.chatrooms));
+      setTimeout(() => {
+        window.location.href = `./chat/index.html?chatroom=${id}`;
+      }, 200);
+    })
+    .catch((e) => console.error(e));
 }
 
 function handleApiError(data) {
@@ -65,7 +86,7 @@ if (sessionStorage.username) {
   // Get all chatroms of the logged user
   Promise.all(userChatroomsIDs.map(getChatroomById)).then((userChatrooms) => {
     userChatrooms.forEach((userChatroom) => {
-      userChatroomsList.innerHTML += chatroomUrlTemplate(userChatroom);
+      userChatroomsList.innerHTML += chatroomUrlTemplate(userChatroom, true);
     });
 
     // Get all chatrooms
