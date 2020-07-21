@@ -8,7 +8,7 @@ function parseMessage(csv) {
     .fromString(csv)
     .then((csvData) => csvData[0])
     .then(({ Symbol, Close }) => {
-      if (!Number(Close)) return '';
+      if (!Number(Close)) return `Stock for ${Symbol} not found`;
       return `${Symbol} quote is $${Close} per share`;
     });
 }
