@@ -4,6 +4,8 @@ const CHATROOM_ID = getChatroomIdFromUrl();
 
 if (sessionStorage.username && CHATROOM_ID) {
   const welcomeMsg = document.querySelector('#userMsg'),
+    allChatroomsEl = document.querySelector('#allChatrooms'),
+    userChatroomsIDs = JSON.parse(sessionStorage.chatrooms),
     // Create WebSocket connection.
     socket = new WebSocket('ws://localhost:8080', 'echo-protocol'),
     SESSION_USERNAME = sessionStorage.username,
@@ -15,6 +17,13 @@ if (sessionStorage.username && CHATROOM_ID) {
 
   document.querySelectorAll('.chatroomName').forEach((node) => {
     node.innerText = `Chatroom #${CHATROOM_ID}`;
+  });
+
+  userChatroomsIDs.forEach((id) => {
+    if (Number(CHATROOM_ID) !== Number(id))
+      allChatroomsEl.innerHTML += `
+        <li><a href="./index.html?chatroom=${id}">Chatroom #${id}</a></li>
+      `;
   });
 
   welcomeMsg.innerText = `Currently chatting as: ${SESSION_USERNAME}`;
