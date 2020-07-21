@@ -27,7 +27,7 @@ function postChatroom(req, res) {
     return res.status(422).json({ status: 422, message: error.message });
 
   return CHATROOM.put(name)
-    .then(() => res.status(201).send({ name }))
+    .then((data) => res.status(201).send(data))
     .catch((error) => {
       return res.status(409).json({ status: 409, message: error.message });
     });

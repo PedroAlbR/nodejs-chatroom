@@ -39,7 +39,7 @@ function joinChatroom(id) {
     headers: { 'content-type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({ chatrooms: [id] }),
   })
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(handleApiError)
     .then((data) => {
       sessionStorage.setItem('chatrooms', JSON.stringify(data.chatrooms));
@@ -91,11 +91,15 @@ if (sessionStorage.username) {
 
     // Get all chatrooms
     return getAllChatrooms().then((chatrooms) => {
-      chatrooms.forEach(({ name, id }) => {
-        // Only add it if its not in the user's list
-        if (!userChatrooms.find((c) => c.id === id))
-          chatroomsList.innerHTML += chatroomUrlTemplate({ id, name });
-      });
+      if (chatrooms.length === userChatrooms.length) {
+        chatroomsList.parentNode.remove();
+      } else {
+        chatrooms.forEach(({ name, id }) => {
+          // Only add it if its not in the user's list
+          if (!userChatrooms.find((c) => c.id === id))
+            chatroomsList.innerHTML += chatroomUrlTemplate({ id, name });
+        });
+      }
     });
   });
 } else {

@@ -4,7 +4,7 @@ const { CHATROOM_TABLE_NAME } = require('../services/constants'),
   db = require('../services/postgres');
 
 function put(name, upsert = false) {
-  return db.put(CHATROOM_TABLE_NAME, null, { name }, upsert);
+  return db.put(CHATROOM_TABLE_NAME, null, { name }, upsert, true);
 }
 
 function getAll() {

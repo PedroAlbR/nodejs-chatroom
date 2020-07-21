@@ -99,7 +99,7 @@ function get(table, key) {
   return getByField(table, 'id', key);
 }
 
-function put(table, key, value, upsert) {
+function put(table, key, value, upsert, getId) {
   if (!knex) return Promise.reject(new Error('PG is not initialized'));
 
   const putObj = key ? Object.assign({}, value, { id: key }) : value,
@@ -109,7 +109,9 @@ function put(table, key, value, upsert) {
       ? knex.raw(`? ON CONFLICT ON CONSTRAINT ${table}_pkey DO ?`, [insert, update])
       : insert;
 
-  return query.then(() => value);
+  return getId
+    ? query.returning('id').then(ID => Object.assign(value, { id: ID[0] }))
+    : query.then(() => value);
 }
 
 function getByField(table, field, value) {
