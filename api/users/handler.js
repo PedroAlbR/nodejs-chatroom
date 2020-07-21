@@ -1,7 +1,12 @@
 'use strict';
 
 const USER = require('./model'),
-  { validatePassword, validateUser, encodePassword } = require('./utils');
+  {
+    validatePassword,
+    validateUser,
+    encodePassword,
+    validateUserUpdate,
+  } = require('./utils');
 
 function getUsers(req, res) {
   return USER.getAll()
@@ -18,6 +23,18 @@ function getUser(req, res) {
     .catch((error) => {
       res.status(404).json({ message: error.message, status: 404 });
     });
+}
+
+function updateUser(req, res) {
+  const { body } = req,
+    username = req.params.username,
+    error = validateUserUpdate(username, body);
+
+  if (error)
+    return res.status(422).json({ status: 422, message: error.message });
+
+  if (body.password) body.password = encodePassword(body.password);
+  return USER.update(username, body).then((user) => res.json(user));
 }
 
 function postUser(req, res) {
@@ -87,3 +104,4 @@ module.exports.postUser = postUser;
 module.exports.getUser = getUser;
 module.exports.getUsers = getUsers;
 module.exports.loginUser = loginUser;
+module.exports.updateUser = updateUser;

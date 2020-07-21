@@ -1,10 +1,12 @@
 'use strict';
 
 const router = require('express').Router(),
-  { postUser, getUsers, getUser, loginUser } = require('./handler');
+  { postUser, getUsers, updateUser, getUser, loginUser } = require('./handler');
 
 router.post('/login', loginUser);
-router.get('/:username', getUser);
+router.route('/:username')
+  .get(getUser)
+  .put(updateUser)
 router.get('/', getUsers);
 router.post('/', postUser);
 
