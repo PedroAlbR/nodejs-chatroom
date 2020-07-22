@@ -7,12 +7,16 @@ function validateChatroom({ name }) {
 }
 
 function getChatrooms(req, res) {
-  return CHATROOM.getAll().then((data) => res.json(data));
+  return CHATROOM.getAll()
+    .then((data) => res.json(data))
+    .catch((error) =>
+      res.status(400).json({ message: error.message, status: 400 })
+    );
 }
 
 function getChatroom(req, res) {
   return CHATROOM.get(req.params.id)
-    .then((chatroom) => res.send(chatroom))
+    .then((chatroom) => res.json(chatroom))
     .catch((error) =>
       res.status(404).json({ message: error.message, status: 404 })
     );

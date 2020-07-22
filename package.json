@@ -9,7 +9,8 @@
     "start-api": "node api/index.js ",
     "start-bot": "node stock_bot/index.js ",
     "start-db": "docker-compose up",
-    "start-websocket": "node websocket/index.js"
+    "start-websocket": "node websocket/index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
     "node-fetch": "^2.6.0",
     "pg": "^8.3.0",
     "websocket": "^1.0.31"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0"
   }
 }

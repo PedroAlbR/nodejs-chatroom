@@ -50,7 +50,12 @@ This bot listens to each message and executes the `/stock` command. (e.g: `/stoc
 npm run start-bot
 ```
 
+### Run tests
+
+```sh
+npm test
+```
+
 ## Open the client
 
 You have to open [`client/homepage.html`](client/homepage.html) on your web browser.
-
